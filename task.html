@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Student Web Browser</title>
+        <link rel="icon" href="images/logo2.png">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+    /* CSS styles */
+    body {
+      font-family: , product-sans;
+      margin: 0;
+      padding: 0;
+      background-color: #E2E2E2;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .left-column {
+      flex: 0 0 250px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      resize: horizontal;
+      overflow: auto;
+    }
+
+    .tabs-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      padding: 10px;
+      background-color: #50C878;
+      border-bottom: 1px solid #ccc;
+      cursor: pointer;
+      color:black;
+      style:none;
+      text-align: center;
+    }
+
+    .tab.active {
+      background-color: #50C878;
+      color: #fff;
+    }
+
+    .new-tab-button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .assignments-container {
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+
+    .right-column {
+      flex: 1;
+      background-color: #f9f9f9;
+    }
+
+    .header {
+      background: #0f0c29;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      color: #fff;
+      padding: 10px;
+    }
+
+    /* New styles for the Google Custom Search box */
+    .search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .search-box {
+      max-width: 400px;
+      flex: 1;
+      border: none;
+      padding: 10px;
+      background-color: #f1f1f1;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .search-box:focus {
+      outline: none;
+    }
+
+    .search-button {
+      background-color: #50C878;
+      color: #333;
+      font-size: 18px;
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .search-button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .search-results-container {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .search-results {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .result {
+      margin-bottom: 0px;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .result-title {
+      font-weight: bold;
+      color: #1a0dab;
+      text-decoration: none;
+      display: block;
+    }
+
+    .result-url {
+      color: #006621;
+      text-decoration: none;
+      display: block;
+      margin-top: 0px;
+      font-size: 14px;
+    }
+
+    .result-snippet {
+      margin-top: 0px;
+      color: #666;
+      font-size: 16px;
+    }
+
+    .navbar {
+      overflow: hidden;
+      background-color: #333;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .navbar a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .navbar a:hover {
+      background: #f1f1f1;
+      color: black;
+    }
+
+    .navbar a.active {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    .main {
+      padding: 16px;
+      margin-bottom: 30px;
+    }
+
+    /* Light Mode */
+    .container.light-mode {
+      background-color: #f1f1f1;
+      color: #333;
+    }
+
+    .container.light-mode .tab {
+      background-color: #e0e0e0;
+      color:#000000;
+    }
+
+    .container.light-mode .new-tab-button {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    .container.light-mode .assignments-container {
+      background-color: #fff;
+    }
+
+    .container.light-mode .header {
+      background-color: #333;
+      color: #fff;
+    }
+
+    /* Dark Mode */
+    .container.dark-mode {
+      background-color: #333;
+
+    }
+
+    .container.dark-mode .tab {
+      background-color: #666;
+      color:#FFFFFF;
+    }
+
+    .container.dark-mode .new-tab-button {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .container.dark-mode .assignments-container {
+      background-color: #000;
+    }
+
+    .container.dark-mode .header {
+      background-color: #000;
+      color: #fff;
+    }
+    .dark-button{
+      padding: 10px;
+      width: 250px;
+      background-color: #ccc;
+      color: black;
+      border: none;
+      cursor: pointer;
+    }
+    .tab-link{
+      color:black;
+      style:none;
+      text-align:center;
+       text-decoration: none;
+    }
+    
+    .sidenav {
+  width: 140px;
+  position: fixed;
+  z-index: 1;
+  top: 20px;
+  left: 10px;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #2196F3;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #064579;
+}
+.home{
+  margin-left:23px;
+}
+.calc{
+  margin-left:35px;
+}
+.task{
+  margin-left:37px;
+}
+    .container2 {
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+  border-radius: 8px;
+  padding: 25px;
+  margin: 85px auto 0;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  height:500px;
+}
+.input-field {
+  position: relative;
+  height: 40px;
+  width: 100%;
+}
+
+.input-field textarea {
+  height: 70%;
+  width: 87%;
+  outline: none;
+  font-size: 18px;
+  font-weight: 400;
+  border-radius: 8px;
+  padding: 18px 45px 18px 15px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+.input-field textarea:focus {
+  border-color: #4070f4;
+}
+textarea::-webkit-scrollbar {
+  display: none;
+}
+.input-field .note-icon {
+  position: absolute;
+  top: 30%;
+  right: 15px;
+  transform: translateY(-30%);
+  pointer-events: none;
+  font-size: 24px;
+  color: #707070;
+}
+.input-field textarea:focus ~ .note-icon {
+  color: #4070f4;
+}
+.container2 .todoLists {
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+.todoLists .list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  background-color: #f2f2f2;
+  padding: 20px 15px;
+  border-radius: 8px;
+  margin-top: 5px;
+  position: relative;
+  cursor: pointer;
+}
+.todoLists .list input {
+  height: 16px;
+  min-width: 16px;
+  accent-color: #4070f4;
+  pointer-events: none;
+}
+.todoLists .list .task {
+  margin: 0 30px 0 15px;
+  word-break: break-all;
+}
+.list input:checked ~ .task {
+  text-decoration: line-through;
+}
+.todoLists .list i {
+  position: absolute;
+  top: 0%;
+  right: 15px;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #707070;
+  padding: 5px;
+  opacity: 0.6;
+  display: none;
+}
+.todoLists .list:hover i {
+  display: inline-flex;
+}
+.todoLists .list i:hover {
+  opacity: 1;
+}
+.container2 .pending-tasks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+.pending-tasks span {
+  color: #333;
+}
+.pending-tasks .clear-button {
+  padding: 6px 12px;
+  outline: none;
+  border: none;
+  background: #4070f4;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.clear-button:hover {
+  background-color: #0e4bf1;
+}
+@media screen and (max-width: 350px) {
+  .container {
+    padding: 25px 10px;
+  }
+}
+      .slideshow-container {
+  position: relative;
+  background: #f1f1f1f1;
+  height: 180px;
+}
+
+/* Slides */
+.mySlides {
+  display: none;
+  padding: 30px;
+  text-align: center;
+  
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 120%;
+  width: auto;
+  margin-top: -30px;
+  padding: 16px;
+  color: #888;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  position: absolute;
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+}
+
+/* The dot/bullet/indicator container */
+.dot-container {
+  text-align: center;
+  padding: 20px;
+  background: #ddd;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+/* Add a background color to the active dot/circle */
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Add an italic font style to all quotes */
+
+
+/* Add a blue color to the author */
+.author {color: cornflowerblue;}
+
+
+  </style>
+</head>
+
+<body>
+
+
+  <div class="container light-mode">
+    <div class="left-column">
+      <img src="images/logo.png" alt="Logo" width="250" cursor="pointer">
+      <div class="sidebar">
+        <hr>
+        <a class="home" href="index.html"><img src="images/home-button.png" alt="Home" width="40" height="40"></a>
+  <a class="calc" href="calculator.html"><img src="images/calc.png" alt="Calculator" width="40" height="40"></a>
+  <a class="task" href="task.html"><img src="images/cmark.png" alt="tasks" width="40" height="40"></a>
+        <hr>
+      </div>
+      <br>
+                      <button class="dark-button" id="theme-toggle-button">Dark Mode</button>
+      
+      
+       <br>
+        <br>
+        <br>
+        <!-- Slideshow container -->
+<div class="slideshow-container">
+
+  <!-- Full-width slides/quotes -->
+  <div class="mySlides">
+    <p>This is the Graphite task page. The dark mode/light mode button changes the color of the page from black to white or reverse.</p>
+  </div>
+
+  <div class="mySlides">
+    <p>You can click on the "+" to add tabs and you can enter the name. You can click the box next to the task to mark it as done and you can click "clear all" to clear all the tasks.</p>
+  </div>
+
+  <div class="mySlides">
+    <p>The tabs above redirect you to the search bar (home), the calculator, and the task page.</p>
+  </div>
+
+  <!-- Next/prev buttons -->
+  <br>
+  <br>
+  <br>
+  <br>
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+
+<!-- Dots/bullets/indicators -->
+<div class="dot-container">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+
+</div>
+    </div>
+ <div class="container2">
+      <div class="input-field">
+        <textarea placeholder="Enter your new tasks"></textarea>
+        <i class="uil uil-notes note-icon"></i>
+      </div>
+
+      <ul class="todoLists"></ul>
+
+      <div class="pending-tasks">
+        <span
+          >You have <span class="pending-num"> no </span> tasks pending.</span
+        >
+        <button class="clear-button">Clear All</button>
+      </div>
+    </div>
+
+
+      <script>
+               var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+
+        //Getting all required elements
+const inputField = document.querySelector(".input-field textarea"),
+  todoLists = document.querySelector(".todoLists"),
+  pendingNum = document.querySelector(".pending-num"),
+  clearButton = document.querySelector(".clear-button");
+
+//we will call this function while adding, deleting and checking-unchecking the task
+function allTasks() {
+  let tasks = document.querySelectorAll(".pending");
+
+  //if tasks' length is 0 then pending num text content will be no, if not then pending num value will be task's length
+  pendingNum.textContent = tasks.length === 0 ? "no" : tasks.length;
+
+  let allLists = document.querySelectorAll(".list");
+  if (allLists.length > 0) {
+    todoLists.style.marginTop = "40px";
+    clearButton.style.pointerEvents = "auto";
+    return;
+  }
+  todoLists.style.marginBottom = "12px";
+  clearButton.style.pointerEvents = "none";
+}
+
+//add task while we put value in text area and press enter
+inputField.addEventListener("keyup", (e) => {
+  let inputVal = inputField.value.trim(); //trim fuction removes space of front and back of the inputed value
+
+  //if enter button is clicked and inputed value length is greated than 0.
+  if (e.key === "Enter" && inputVal.length > 0) {
+    let liTag = ` <li class="list pending" onclick="handleStatus(this)">
+          <input type="checkbox" />
+          <span class="task">${inputVal}</span>
+          <i class="uil uil-trash" onclick="deleteTask(this)"></i>
+        </li>`;
+
+    todoLists.insertAdjacentHTML("beforeend", liTag); //inserting li tag inside the todolist div
+    inputField.value = ""; //removing value from input field
+    allTasks();
+  }
+});
+
+//checking and unchecking the chekbox while we click on the task
+function handleStatus(e) {
+  const checkbox = e.querySelector("input"); //getting checkbox
+  checkbox.checked = checkbox.checked ? false : true;
+  e.classList.toggle("pending");
+  allTasks();
+}
+
+//deleting task while we click on the delete icon.
+function deleteTask(e) {
+  e.parentElement.remove(); //getting parent element and remove it
+  allTasks();
+}
+
+//deleting all the tasks while we click on the clear button.
+clearButton.addEventListener("click", () => {
+  todoLists.innerHTML = "";
+  allTasks();
+});
+      
+        // Toggle between light and dark mode
+        function toggleTheme() {
+          const container = document.querySelector('.container');
+          const button = document.querySelector('#theme-toggle-button');
+
+          if (container.classList.contains('light-mode')) {
+            // Switch to dark mode
+            container.classList.remove('light-mode');
+            container.classList.add('dark-mode');
+            button.textContent = 'Light Mode';
+          } else {
+            // Switch to light mode
+            container.classList.remove('dark-mode');
+            container.classList.add('light-mode');
+            button.textContent = 'Dark Mode';
+          }
+        }
+
+        // Attach event listener to the theme toggle button
+        document.querySelector('#theme-toggle-button').addEventListener('click', toggleTheme);
+
+        // Load and display search results
+        function loadSearchResults() {
+          const searchResultsContainer = document.querySelector('.search-results-container');
+          const searchResultsDiv = document.querySelector('.search-results');
+
+          // Clear previous results
+          searchResultsDiv.innerHTML = '';
+
+          // Get search results from the Google Programmable Search Element
+          const gcsResults = document.querySelectorAll('.gsc-webResult');
+
+          if (gcsResults.length > 0) {
+            gcsResults.forEach(result => {
+              const resultDiv = document.createElement('div');
+              resultDiv.classList.add('result');
+
+              const titleElement = result.querySelector('.gs-title');
+              const titleLink = titleElement.querySelector('a');
+              titleLink.classList.add('result-title');
+              resultDiv.appendChild(titleLink);
+
+              const urlElement = document.createElement('a');
+              urlElement.classList.add('result-url');
+              urlElement.textContent = titleLink.href;
+              urlElement.href = titleLink.href;
+              urlElement.target = '_blank';
+              urlElement.addEventListener('click', function (e) {
+                e.preventDefault();
+                showLinkInTab(urlElement.href);
+              });
+              resultDiv.appendChild(urlElement);
+
+              const snippetElement = document.createElement('p');
+              snippetElement.classList.add('result-snippet');
+              const snippetText = result.querySelector('.gs-snippet');
+              if (snippetText) {
+                snippetElement.textContent = snippetText.textContent;
+              }
+              resultDiv.appendChild(snippetElement);
+
+              searchResultsDiv.appendChild(resultDiv);
+            });
+          } else {
+            const errorMessage = document.createElement('p');
+            errorMessage.classList.add('error-message');
+            errorMessage.textContent = 'No results found.';
+            searchResultsDiv.appendChild(errorMessage);
+          }
+
+          // Show search results container
+          searchResultsContainer.style.display = 'block';
+        }
+
+        // Show link in a small tab
+        function showLinkInTab(link) {
+          const activeTab = document.querySelector('.active-tab');
+          const tabContent = document.createElement('div');
+          tabContent.classList.add('tab-content');
+          tabContent.textContent = link;
+          activeTab.appendChild(tabContent);
+        }
+
+        // Show tab content
+        function showTabContent(tabIndex) {
+          const tabs = document.querySelectorAll('.tab');
+          const tabContents = document.querySelectorAll('.tab-content');
+
+          // Remove active class from all tabs and hide tab contents
+          tabs.forEach(tab => tab.classList.remove('active-tab'));
+          tabContents.forEach(content => (content.style.display = 'none'));
+
+          // Add active class to the selected tab and show its content
+          const selectedTab = tabs[tabIndex - 1];
+          const selectedContent = tabContents[tabIndex - 1];
+          selectedTab.classList.add('active-tab');
+          selectedContent.style.display = 'block';
+        }
+
+        // Add a new tab
+        function addNewTab() {
+          const tabsContainer = document.querySelector('.tabs-container');
+          const tabs = document.querySelectorAll('.tab');
+          const tabContents = document.querySelectorAll('.tab-content');
+
+          // Remove active class from all tabs and hide tab contents
+          tabs.forEach(tab => tab.classList.remove('active-tab'));
+          tabContents.forEach(content => (content.style.display = 'none'));
+
+          // Create a new tab and tab content
+          const newTabIndex = tabs.length + 1;
+
+          const newTab = document.createElement('div');
+          newTab.classList.add('tab', 'active-tab');
+          newTab.onclick = () => showTabContent(newTabIndex);
+
+          const tabLink = document.createElement('a');
+          tabLink.classList.add('tab-link');
+          tabLink.href = '#';
+          tabLink.textContent = 'Tab ' + newTabIndex;
+          newTab.appendChild(tabLink);
+
+          tabsContainer.insertBefore(newTab, tabsContainer.lastChild);
+
+          const newTabContent = document.createElement('div');
+          newTabContent.classList.add('tab-content');
+          tabsContainer.parentNode.appendChild(newTabContent);
+
+          showTabContent(newTabIndex);
+        }
+
+        // Show the first tab by default
+        showTabContent(1);
+
+        // Perform search when user presses Enter in the search box
+        document.querySelector('.search-box').addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') {
+            const query = event.target.value;
+            const searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+
+            window.open(searchUrl, '_blank');
+          }
+        });
+
+        // Execute the loadSearchResults function when the page is loaded
+        window.addEventListener('load', function () {
+          loadSearchResults();
+        });
+      </script>
+
+    </div>
+  </div>
+</body>
+
+</html>
